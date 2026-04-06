@@ -7,6 +7,7 @@ vim.pack.add{
     { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
 }
 
+-- General vim configuration
 vim.opt.number = true		-- Enable line numbers
 vim.opt.relativenumber = true	-- Enable relative line numbers
 -- Set tab spaces
@@ -14,6 +15,20 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
+
+-- Keymap configuration
+vim.g.mapleader = " " -- Map leader to <space>
+-- Diagnostics
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float) -- Show diagnostic message in a floating window
+-- 'float = true' automatically opens the diagnostic float window
+-- Jump to the NEXT diagnostic
+vim.keymap.set('n', ']d', function()
+    vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = 'Jump to next diagnostic' })
+-- Jump to the PREVIOUS diagnostic
+vim.keymap.set('n', '[d', function()
+    vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = 'Jump to previous diagnostic' })
 
 -- Treesitter
 require('nvim-treesitter').setup {
@@ -62,6 +77,9 @@ vim.lsp.config['lua_ls'] = {
 }
 vim.lsp.enable('lua_ls')
 
+-- Bash
+vim.lsp.enable('bashls')
+
 -- Add filetype support for those weird .net files
 vim.filetype.add({
     extension = {
@@ -83,7 +101,6 @@ require('roslyn').setup({
         -- Pass your standard lspconfig options here
         on_attach = function(client, bufnr)
             -- Your keybindings
-            print('roslyn attached')
         end,
         capabilities = require('cmp_nvim_lsp').default_capabilities(),
     },
