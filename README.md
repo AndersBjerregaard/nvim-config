@@ -148,3 +148,19 @@ This can be easily be done by just installing `clang` from the ubuntu package re
 sudo apt install -y clang
 ```
 
+## Apply Config
+
+*At the root of the repository directory*.
+
+Remove any existing configuration (make sure to back these files up if you want):
+
+```bash
+rm -rf ~/.config/nvim/*
+```
+
+Copy config:
+
+```bash
+cp nvim/init.lua ~/.config/nvim/
+```
+
