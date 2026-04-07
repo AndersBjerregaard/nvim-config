@@ -10,7 +10,22 @@ vim.pack.add{
     { src = 'https://github.com/onsails/lspkind.nvim' },
     { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
     { src = 'https://github.com/nvim-lualine/lualine.nvim' },
+    { src = 'https://github.com/nvim-tree/nvim-tree.lua' },
 }
+
+-- Disable netrw at the very start for nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true    -- Enable 24-bit colors
+
+-- File Explorer
+---@type nvim_tree.config
+local fileTreeConfig = {
+    view = {
+        side = "right"
+    }
+}
+require("nvim-tree").setup(fileTreeConfig)
 
 -- General vim configuration
 vim.opt.number = true		    -- Enable line numbers
@@ -227,4 +242,16 @@ require("catppuccin").setup({
             },
         },
     },
+})
+
+-- Init functions
+local function open_nvim_tree()
+  -- require("nvim-tree.api").tree.open()
+  vim.cmd("NvimTreeOpen")   -- Open tree
+  vim.cmd("wincmd p")       -- Focus file buffer
+end
+
+-- Open file explorer at startup
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+  callback = open_nvim_tree
 })
