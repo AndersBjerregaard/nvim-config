@@ -148,6 +148,14 @@ This can be easily be done by just installing `clang` from the ubuntu package re
 sudo apt install -y clang
 ```
 
+## Telescope
+
+Telescope needs `ripgrep` to be able to text search
+
+```bash
+sudo apt install -y ripgrep
+```
+
 ## Apply Config
 
 *At the root of the repository directory*.
