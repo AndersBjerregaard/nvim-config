@@ -26,7 +26,7 @@ install_neovim() {
 
     local target="/opt/nvim-linux-x86_64"
     local tarball="nvim-linux-x86_64.tar.gz"
-    local url="https://github.com/neovim/neovim/releases/v0.12.1/download/${tarball}"
+    local url="https://github.com/neovim/neovim/releases/download/v0.12.1/${tarball}"
     local tmpfile
     tmpfile="$(mktemp --suffix=".tar.gz")"
 
