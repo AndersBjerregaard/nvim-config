@@ -2,12 +2,12 @@
 
 This is only maintained for the latest version of NeoVim and Debian/Ubuntu systems.
 
-## NeoVim 0.12.0
+## NeoVim 0.12.1
 
 Download the latest pre-built binary for linux:
 
 ```bash
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+curl -LO https://github.com/neovim/neovim/releases/v0.12.1/download/nvim-linux-x86_64.tar.gz
 ```
 
 Remove existing installation:
