@@ -202,7 +202,25 @@ install_cc() {
 install_cc
 
 # ─────────────────────────────────────────────
-# 6. Apply NeoVim config
+# 6. Treesitter dependency: C compiler (cc)
+# ─────────────────────────────────────────────
+
+install_ripgrep() {
+  info "Telescope: checking for ripgrep dependency"
+
+  if command -v rg &>/dev/null; then
+    skip "Telescope: ripgrep already available"
+  else
+    info "Telescope: installing ripgrep via apt"
+    sudo apt-get install -y ripgrep
+    success "Telescope: ripgrep installed"
+  fi
+}
+
+install_ripgrep
+
+# ─────────────────────────────────────────────
+# 7. Apply NeoVim config
 # ─────────────────────────────────────────────
 
 apply_config() {
@@ -224,7 +242,7 @@ apply_config() {
 apply_config
 
 # ─────────────────────────────────────────────
-# 7. Summary: PATH entries to add
+# 8. Summary: PATH entries to add
 # ─────────────────────────────────────────────
 
 printf '\n'
