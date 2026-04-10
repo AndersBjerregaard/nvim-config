@@ -71,6 +71,8 @@ install_roslyn() {
        || [ -f "$HOME/.dotnet/tools/roslyn-language-server" ]; then
         skip "Roslyn: roslyn-language-server already installed"
     else
+        info "Roslyn: updating packages"
+        sudo apt-get update -qq
         info "Roslyn: installing roslyn-language-server dotnet tool"
         # Temporarily add dotnet tools to PATH for this session
         export PATH="$PATH:$HOME/.dotnet/tools"
