@@ -2,7 +2,7 @@
 
 This is only maintained for the latest version of NeoVim and Debian/Ubuntu systems.
 
-## NeoVim 12.0
+## NeoVim 0.12.0
 
 Download the latest pre-built binary for linux:
 
