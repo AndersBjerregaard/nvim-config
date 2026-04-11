@@ -58,9 +58,21 @@ end, { desc = 'Jump to next diagnostic' })
 vim.keymap.set('n', '[d', function()
 	vim.diagnostic.jump({ count = -1, float = true })
 end, { desc = 'Jump to previous diagnostic' })
--- Move between windows using <Ctrl> + direction
+-- Move focus between windows using <Ctrl> + direction
 vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move focus to the lower window' })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move focus to the upper window' })
+-- Window management
+vim.keymap.set('n', '<leader>sv', '<C-w>v', { desc = 'Split window vertically' })   -- Split vertically
+vim.keymap.set('n', '<leader>sh', '<C-w>s', { desc = 'Split window horizontally' }) -- Split horizontally
+vim.keymap.set('n', '<leader>se', '<C-w>=', { desc = 'Make splits equal size' })    -- Equalize size
+vim.keymap.set('n', '<leader>sx', ':close<CR>', { desc = 'Close current split' })   -- Close split
+-- Resize windows with arrows
+vim.keymap.set('n', '<C-Up>', ':resize +2<CR>', { desc = 'Resize window up' })
+vim.keymap.set('n', '<C-Down>', ':resize -2<CR>', { desc = 'Resize window down' })
+vim.keymap.set('n', '<C-Left>', ':vertical resize -2<CR>', { desc = 'Resize window left' })
+vim.keymap.set('n', '<C-Right>', ':vertical resize +2<CR>', { desc = 'Resize window right' })
 -- Toggle nvim-tree
 vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', { desc = 'Toggle File Explorer' })
 -- Focus nvim-tree (without toggling)
