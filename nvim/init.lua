@@ -45,6 +45,7 @@ vim.opt.signcolumn = "yes" -- Always show diagnostics sign column
 --------------------------
 -- Keymap configuration --
 --------------------------
+-- LSP specific keymaps can be found at their own section
 vim.g.mapleader = " " -- Map leader to <space>
 -- Diagnostics
 vim.keymap.set('n', 'gh', vim.diagnostic.open_float) -- Show diagnostic message in a floating window
@@ -184,9 +185,32 @@ cmp.setup({
 	}),
 })
 
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 --------------------------
 ---- Language Servers ----
 --------------------------
+
+-- Language Server keymaps
+vim.api.nvim_create_autocmd('LspAttach', {
+	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+	callback = function(ev)
+		local builtin = require('telescope.builtin')
+		local opts = { buffer = ev.buf, remap = false }
+
+		-- Definitions & Navigation
+		vim.keymap.set('n', 'gd', builtin.lsp_definitions, opts)
+		vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
+		vim.keymap.set('n', 'gi', builtin.lsp_implementations, opts)
+		vim.keymap.set('n', 'gt', builtin.lsp_type_definitions, opts)
+		vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+
+		-- Actions
+		vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+		vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+	end,
+})
+
 -- Lua
 vim.lsp.config['lua_ls'] = {
 	-- Command and arguments to start the server.
@@ -199,6 +223,7 @@ vim.lsp.config['lua_ls'] = {
 	root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
 	-- Specific settings to send to the server. The schema is server-defined.
 	-- Example: https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json
+	capabilities = capabilities,
 	settings = {
 		Lua = {
 			runtime = {
@@ -210,6 +235,7 @@ vim.lsp.config['lua_ls'] = {
 vim.lsp.enable('lua_ls')
 
 -- Bash
+vim.lsp.config('bashls', { capabilities = capabilities })
 vim.lsp.enable('bashls')
 
 -- Add filetype support for those weird .net files
@@ -231,13 +257,53 @@ require('roslyn').setup({
 		"--stdio",
 	},
 	config = {
-		-- Pass your standard lspconfig options here
-		on_attach = function(client, bufnr)
-			-- Your keybindings
-		end,
-		capabilities = require('cmp_nvim_lsp').default_capabilities(),
+		capabilities = capabilities,
 	},
 })
+
+-- TypeScript and Vue
+local vue_language_server_path = vim.fn.expand('~/.local/share/node/lib/node_modules/@vue/language-server')
+local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
+
+local vue_plugin = {
+	name = '@vue/typescript-plugin',
+	location = vue_language_server_path,
+	languages = { 'vue' },
+	configNamespace = 'typescript',
+}
+
+local vtsls_config = {
+	capabilities = capabilities,
+	settings = {
+		vtsls = {
+			tsserver = {
+				globalPlugins = {
+					vue_plugin,
+				},
+			},
+		},
+	},
+	filetypes = tsserver_filetypes,
+}
+
+local ts_ls_config = {
+	capabilities = capabilities,
+	init_options = {
+		plugins = {
+			vue_plugin,
+		},
+	},
+	filetypes = tsserver_filetypes,
+}
+
+local vue_ls_config = {
+	capabilities = capabilities,
+}
+
+vim.lsp.config('vtsls', vtsls_config)
+vim.lsp.config('vue_ls', vue_ls_config)
+vim.lsp.config('ts_ls', ts_ls_config)
+vim.lsp.enable({'vtsls', 'vue_ls'})
 
 -- Statusline
 require('lualine').setup {

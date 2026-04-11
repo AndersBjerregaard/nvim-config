@@ -156,6 +156,32 @@ Telescope needs `ripgrep` to be able to text search
 sudo apt install -y ripgrep
 ```
 
+## Vue
+
+Vue language server can be installed globally through npm:
+
+```bash
+npm install -g @vue/language-server
+```
+
+The language server only supports Vue 3 projects by default. For Vue 2 projects,
+[additional configuration](https://github.com/vuejs/language-tools/blob/master/extensions/vscode/README.md?plain=1#L19) are required.
+
+The Vue language server works in "hybrid mode" that exclusively manages the CSS/HTML sections. You need the `vtsls` server with `@vue/typescript-plugin`
+plugin to support TypeScript in `.vue` files. See `vtsls` section and
+https://github.com/vuejs/language-tools/wiki/Neovim for more information.
+
+## Typescript
+
+Install TypeScript, TypeScript language server and TypeScript Vue language server:
+
+```bash
+npm install -g typescript typescript-language-server @vtsls/language-server
+```
+
+*Tip: If you installed node as its standalone binary in your home directory, like this repository recommended,
+you can find globally installed npm packages at: `~/.local/share/node/`.
+
 ## Apply Config
 
 *At the root of the repository directory*.

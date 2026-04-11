@@ -204,7 +204,7 @@ install_cc() {
 install_cc
 
 # ─────────────────────────────────────────────
-# 6. Treesitter dependency: C compiler (cc)
+# 6. Telescope dependency: ripgrep
 # ─────────────────────────────────────────────
 
 install_ripgrep() {
@@ -222,7 +222,23 @@ install_ripgrep() {
 install_ripgrep
 
 # ─────────────────────────────────────────────
-# 7. Apply NeoVim config
+# 7. Vue & TypeScript language servers
+# ─────────────────────────────────────────────
+
+install_vue_typescript() {
+  local node_version="24.14.1"
+  local node_dir="$HOME/.local/share/node"
+  local npm_binary="${node_dir}/node-v${node_version}-linux-x64/bin/npm"
+
+  info "Vue & TypeScript: installing / updating Vue & TypeScript language servers"
+
+  $npm_binary install -g typescript typescript-language-server @vtsls/language-server @vue/language-server
+
+  success "Vue & TypeScript language servers installed"
+}
+
+# ─────────────────────────────────────────────
+# 8. Apply NeoVim config
 # ─────────────────────────────────────────────
 
 apply_config() {
@@ -244,7 +260,7 @@ apply_config() {
 apply_config
 
 # ─────────────────────────────────────────────
-# 8. Summary: PATH entries to add
+# 9. Summary: PATH entries to add
 # ─────────────────────────────────────────────
 
 printf '\n'
