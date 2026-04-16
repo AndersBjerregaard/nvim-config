@@ -16,6 +16,7 @@ vim.pack.add{
   { src = 'https://github.com/nvim-lua/plenary.nvim', rev = '74b06c6c75e4eeb3108ec01852001636d85a932b' },
   { src = 'https://github.com/nvim-telescope/telescope.nvim', rev = '48d2656e54d3e3953ae647153ccdaffa50d4d76b' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim', rev = '8d82c240f190fc33723d48c308ccc1ed8baad69d' },
+  { src = 'https://github.com/folke/which-key.nvim', rev = '3aab2147e74890957785941f0c1ad87d0a44c15a' },
 }
 
 -- Disable netrw at the very start for nvim-tree
@@ -45,6 +46,14 @@ vim.opt.signcolumn = "yes" -- Always show diagnostics sign column
 --------------------------
 -- Keymap configuration --
 --------------------------
+-- Keymap help
+require("which-key").setup({})
+local wk = require("which-key")
+wk.add({
+  { "<leader>p", group = "Project/Search" },
+  { "<leader>s", group = "Splits/Windows" },
+  { "<leader>g", group = "Git" },
+})
 -- LSP specific keymaps can be found at their own section
 vim.g.mapleader = " " -- Map leader to <space>
 -- Diagnostics
