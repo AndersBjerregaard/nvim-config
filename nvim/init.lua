@@ -1,22 +1,22 @@
 vim.pack.add{
-	{ src = 'https://github.com/neovim/nvim-lspconfig', rev = '9ccd58a7949091c0cc2777d4e92a45a209c808c1' },
-	{ src = 'https://github.com/seblyng/roslyn.nvim', rev = 'ff43201090361b8936e008a006473b59ef2c0ca6' },
-	{ src = 'https://github.com/hrsh7th/cmp-nvim-lsp', rev = 'cbc7b02bb99fae35cb42f514762b89b5126651ef' },
-	{ src = 'https://github.com/hrsh7th/nvim-cmp', rev = 'a1d504892f2bc56c2e79b65c6faded2fd21f3eca' },
-	{ src = 'https://github.com/L3MON4D3/LuaSnip', rev = 'a62e1083a3cfe8b6b206e7d3d33a51091df25357' },
-	{ src = 'https://github.com/arnamak/stay-centered.nvim', rev = 'e1a63ccaf2584e97c0ef8e64f9654c9a80d983f6' },
-	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter', rev = '4916d6592ede8c07973490d9322f187e07dfefac' },
-	{ src = 'https://github.com/catppuccin/nvim', rev = '426dbebe06b5c69fd846ceb17b42e12f890aedf1' },
-	{ src = 'https://github.com/onsails/lspkind.nvim', rev = 'c7274c48137396526b59d86232eabcdc7fed8a32' },
-	{ src = 'https://github.com/nvim-tree/nvim-web-devicons', rev = '95b7a002d5dba1a42eb58f5fac5c565a485eefd0' },
-	{ src = 'https://github.com/nvim-lualine/lualine.nvim', rev = '8811f3f3f4dc09d740c67e9ce399e7a541e2e5b2' },
-	{ src = 'https://github.com/nvim-tree/nvim-tree.lua', rev = '509962f21ab7289d8dcd28568af539be39a8c01e' },
-	{ src = 'https://github.com/akinsho/bufferline.nvim', rev = '655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3' },
-  { src = 'https://github.com/famiu/bufdelete.nvim', rev = 'f6bcea78afb3060b198125256f897040538bcb81' },
-  { src = 'https://github.com/nvim-lua/plenary.nvim', rev = '74b06c6c75e4eeb3108ec01852001636d85a932b' },
-  { src = 'https://github.com/nvim-telescope/telescope.nvim', rev = '48d2656e54d3e3953ae647153ccdaffa50d4d76b' },
-  { src = 'https://github.com/lewis6991/gitsigns.nvim', rev = '8d82c240f190fc33723d48c308ccc1ed8baad69d' },
-  { src = 'https://github.com/folke/which-key.nvim', rev = '3aab2147e74890957785941f0c1ad87d0a44c15a' },
+    { src = 'https://github.com/neovim/nvim-lspconfig', rev = '9ccd58a7949091c0cc2777d4e92a45a209c808c1' },
+    { src = 'https://github.com/seblyng/roslyn.nvim', rev = 'ff43201090361b8936e008a006473b59ef2c0ca6' },
+    { src = 'https://github.com/hrsh7th/cmp-nvim-lsp', rev = 'cbc7b02bb99fae35cb42f514762b89b5126651ef' },
+    { src = 'https://github.com/hrsh7th/nvim-cmp', rev = 'a1d504892f2bc56c2e79b65c6faded2fd21f3eca' },
+    { src = 'https://github.com/L3MON4D3/LuaSnip', rev = 'a62e1083a3cfe8b6b206e7d3d33a51091df25357' },
+    { src = 'https://github.com/arnamak/stay-centered.nvim', rev = 'e1a63ccaf2584e97c0ef8e64f9654c9a80d983f6' },
+    { src = 'https://github.com/nvim-treesitter/nvim-treesitter', rev = '4916d6592ede8c07973490d9322f187e07dfefac' },
+    { src = 'https://github.com/catppuccin/nvim', rev = '426dbebe06b5c69fd846ceb17b42e12f890aedf1' },
+    { src = 'https://github.com/onsails/lspkind.nvim', rev = 'c7274c48137396526b59d86232eabcdc7fed8a32' },
+    { src = 'https://github.com/nvim-tree/nvim-web-devicons', rev = '95b7a002d5dba1a42eb58f5fac5c565a485eefd0' },
+    { src = 'https://github.com/nvim-lualine/lualine.nvim', rev = '8811f3f3f4dc09d740c67e9ce399e7a541e2e5b2' },
+    { src = 'https://github.com/nvim-tree/nvim-tree.lua', rev = '509962f21ab7289d8dcd28568af539be39a8c01e' },
+    { src = 'https://github.com/akinsho/bufferline.nvim', rev = '655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3' },
+    { src = 'https://github.com/famiu/bufdelete.nvim', rev = 'f6bcea78afb3060b198125256f897040538bcb81' },
+    { src = 'https://github.com/nvim-lua/plenary.nvim', rev = '74b06c6c75e4eeb3108ec01852001636d85a932b' },
+    { src = 'https://github.com/nvim-telescope/telescope.nvim', rev = '48d2656e54d3e3953ae647153ccdaffa50d4d76b' },
+    { src = 'https://github.com/lewis6991/gitsigns.nvim', rev = '8d82c240f190fc33723d48c308ccc1ed8baad69d' },
+    { src = 'https://github.com/folke/which-key.nvim', rev = '3aab2147e74890957785941f0c1ad87d0a44c15a' },
 }
 
 -- Disable netrw at the very start for nvim-tree
@@ -29,7 +29,11 @@ vim.opt.termguicolors = true    -- Enable 24-bit colors
 local fileTreeConfig = {
 	view = {
 		side = "right"
-	}
+	},
+    filters = {
+        enable = true,
+        git_ignored = true,
+    },
 }
 require("nvim-tree").setup(fileTreeConfig)
 
@@ -342,6 +346,14 @@ vim.lsp.config('vtsls', vtsls_config)
 vim.lsp.config('vue_ls', vue_ls_config)
 vim.lsp.config('ts_ls', ts_ls_config)
 vim.lsp.enable({'vtsls', 'vue_ls'})
+
+---- Rust
+-- Download: https://rust-lang.org/learn/get-started/
+-- Install language server: rustup component add rust-analyzer
+vim.lsp.config('rust_analyzer', {
+    capabilities = capabilities
+})
+vim.lsp.enable('rust_analyzer')
 
 -- Statusline
 require('lualine').setup {
