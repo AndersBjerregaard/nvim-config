@@ -37,9 +37,9 @@ require("nvim-tree").setup(fileTreeConfig)
 vim.opt.number = true		    -- Enable line numbers
 vim.opt.relativenumber = true	-- Enable relative line numbers
 -- Set tab spaces
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.softtabstop = 2
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 vim.opt.signcolumn = "yes" -- Always show diagnostics sign column
 
@@ -89,10 +89,27 @@ vim.keymap.set('n', '<leader>f', ':NvimTreeFocus<CR>', { desc = 'Focus File Expl
 -- Navigate buffers
 vim.keymap.set('n', '<Tab>', ':bnext<CR>', { desc = 'Next buffer' })
 vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', { desc = 'Previous buffer' })
--- -- Close current buffer (without closing the window)
--- vim.keymap.set('n', '<leader>x', ':bdelete<CR>', { desc = 'Close current buffer' })
 -- Use the plugin 'bufdelete' to handle deletion of buffers
 vim.keymap.set('n', '<leader>x', ':Bdelete<CR>', { desc = 'Close current buffer' })
+-- Close all buffers except current (ignoring NvimTree)
+local excluded_ft = { "NvimTree", "trouble", "undotree" }
+vim.keymap.set('n', '<leader>X', function ()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local buffers = vim.api.nvim_list_bufs()
+
+  for _, buf in ipairs(buffers) do
+    -- Check the filetype of the buffer
+    local ft = vim.bo[buf].filetype
+
+    -- Logic:
+    -- 1. Must not be the current buffer
+    -- 2. Must be loaded_netrw
+    -- 3. Must NOT be an exclusion
+    if buf ~= current_buf and vim.api.nvim_buf_is_loaded(buf) and not vim.tbl_contains(excluded_ft, ft) then
+      pcall(vim.cmd, 'Bdelete ' .. buf)
+    end
+  end
+end, { desc = 'Close all but current buffer (keep explorer)' })
 -- Searching
 local builtin = require('telescope.builtin')
 -- Search for files by name (Project-wide)
