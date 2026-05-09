@@ -158,6 +158,9 @@ vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
 
 -- Treesitter
 require('nvim-treesitter').setup {
+	ensure_installed = { "svelte", "javascript", "typescript", "css", "html", "lua", "vim", "vimdoc" },
+	sync_install = false,
+	auto_install = true, -- Automatically install missing parsers when you open a new filetype
 	highlight = {
 		enable = true,  -- Switch for colors
 		additional_vim_regex_highlighting = false,
@@ -365,6 +368,12 @@ vim.lsp.config('vue_ls', vue_ls_config)
 vim.lsp.config('ts_ls', ts_ls_config)
 vim.lsp.enable({'vtsls', 'vue_ls'})
 
+-- Svelte
+vim.lsp.config('svelte', {
+    capabilities = capabilities
+})
+vim.lsp.enable('svelte')
+
 ---- Rust
 -- Download: https://rust-lang.org/learn/get-started/
 -- Install language server: rustup component add rust-analyzer
@@ -475,6 +484,11 @@ local function open_nvim_tree()
 	vim.cmd("NvimTreeOpen")   -- Open tree
 	vim.cmd("wincmd p")       -- Focus file buffer
 end
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { 'svelte' },
+    callback = function() vim.treesitter.start() end,
+})
 
 -- Open file explorer at startup
 vim.api.nvim_create_autocmd({ "VimEnter" }, {

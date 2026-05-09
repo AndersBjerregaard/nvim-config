@@ -76,7 +76,7 @@ install_roslyn() {
         info "Roslyn: installing roslyn-language-server dotnet tool"
         # Temporarily add dotnet tools to PATH for this session
         export PATH="$PATH:$HOME/.dotnet/tools"
-        dotnet tool install --global roslyn-language-server
+        dotnet tool install --global roslyn-language-server --prerelease
         success "Roslyn: roslyn-language-server installed"
     fi
 
@@ -186,7 +186,50 @@ install_bash_ls() {
 install_bash_ls
 
 # ─────────────────────────────────────────────
-# 5. Treesitter dependency: C compiler (cc)
+# 5. Rust
+# ─────────────────────────────────────────────
+
+install_rust() {
+    info "Rust: Checking for rustup"
+    if command -v rustup &>/dev/null; then
+        skip "Rust: rustup already available"
+    else
+        info "Rust: installing rustup via script"
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        success "Rust: rustup installed"
+    fi
+    info "Rust: Checking for rust-analyzer"
+    if command -v rust-analyzer &>/dev/null; then
+        skip "Rust: rust-analyzer already available"
+    else
+        info "Rust: installing rust-analyzer via rustup"
+        rustup component add rust-analyzer
+        success "Rust: rust-analyzer installed"
+    fi
+    info "Installing cargo binstall via script"
+    curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+}
+
+install_rust
+
+# ─────────────────────────────────────────────
+# 6. Treesitter dependency: tree-sitter cli
+# ─────────────────────────────────────────────
+
+install_tree_sitter() {
+    info "Treesitter: checking for tree-sitter"
+    if command -v tree-sitter &>/dev/null; then
+        skip "Treesitter: tree-sitter already available"
+    else
+        info "Treesitter: installing tree-sitter via cargo binstall"
+        cargo binstall tree-sitter-cli
+    fi
+}
+
+install_tree_sitter
+
+# ─────────────────────────────────────────────
+# 7. Treesitter dependency: C compiler (cc)
 # ─────────────────────────────────────────────
 
 install_cc() {
@@ -204,7 +247,7 @@ install_cc() {
 install_cc
 
 # ─────────────────────────────────────────────
-# 6. Telescope dependency: ripgrep
+# 8. Telescope dependency: ripgrep
 # ─────────────────────────────────────────────
 
 install_ripgrep() {
@@ -222,7 +265,7 @@ install_ripgrep() {
 install_ripgrep
 
 # ─────────────────────────────────────────────
-# 7. Vue & TypeScript language servers
+# 9. Vue, Svelte & TypeScript language servers
 # ─────────────────────────────────────────────
 
 install_vue_typescript() {
@@ -232,13 +275,13 @@ install_vue_typescript() {
 
   info "Vue & TypeScript: installing / updating Vue & TypeScript language servers"
 
-  $npm_binary install -g typescript typescript-language-server @vtsls/language-server @vue/language-server
+  $npm_binary install -g typescript typescript-language-server @vtsls/language-server @vue/language-server svelte-language-server
 
   success "Vue & TypeScript language servers installed"
 }
 
 # ─────────────────────────────────────────────
-# 8. Apply NeoVim config
+# 10. Apply NeoVim config
 # ─────────────────────────────────────────────
 
 apply_config() {
@@ -260,7 +303,7 @@ apply_config() {
 apply_config
 
 # ─────────────────────────────────────────────
-# 9. Summary: PATH entries to add
+# 11. Summary: PATH entries to add
 # ─────────────────────────────────────────────
 
 printf '\n'
