@@ -383,6 +383,12 @@ vim.lsp.config('rust_analyzer', {
 })
 vim.lsp.enable('rust_analyzer')
 
+-- Python
+vim.lsp.config('pylsp', {
+    capabilities = capabilities
+})
+vim.lsp.enable('pylsp')
+
 -- Statusline
 require('lualine').setup {
 	options = {

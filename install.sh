@@ -283,7 +283,7 @@ install_vue_typescript() {
 install_vue_typescript
 
 # ─────────────────────────────────────────────
-# 10. Apply NeoVim config
+# 10. Python language server
 # ─────────────────────────────────────────────
 
 install_python() {
@@ -294,6 +294,39 @@ install_python() {
   pip install --break-system-packages python-lsp-server
   success "Python: Python and python lsp installed"
 }
+
+install_python
+
+# ─────────────────────────────────────────────
+# 11. Terraform language server
+# ─────────────────────────────────────────────
+
+install_terraform() {
+    info "Terraform: checking installation"
+    if ! command -v terraform-ls &>/dev/null; then
+
+        require_cmd unzip
+
+        info "Terraform: downloading terraform-ls_0.38.6_linux_amd64"
+
+        local zipfile="terraform-ls_0.38.6_linux_amd64.zip"
+        local url="https://releases.hashicorp.com/terraform-ls/0.38.6/${zipfile}"
+        local tmpfile
+        tmpfile="$(mktemp --suffix=".zip")"
+
+        curl -L --progress-bar -o "$tmpfile" "$url"
+
+        info "Extracing to /usr/local/bin"
+
+        sudo unzip "$tmpfile" -d "/usr/local/bin" -x "LICENSE.txt"
+
+        rm -f "$tmpfile"
+
+        success "Terraform language server installed to /usr/local/bin"
+    fi
+}
+
+install_terraform
 
 # ─────────────────────────────────────────────
 # 11. Apply NeoVim config
