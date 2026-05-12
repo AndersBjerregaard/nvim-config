@@ -273,15 +273,30 @@ install_vue_typescript() {
   local node_dir="$HOME/.local/share/node"
   local npm_binary="${node_dir}/node-v${node_version}-linux-x64/bin/npm"
 
-  info "Vue & TypeScript: installing / updating Vue & TypeScript language servers"
+  info "Vue, Svelte & TypeScript: installing / updating Vue & TypeScript language servers"
 
   $npm_binary install -g typescript typescript-language-server @vtsls/language-server @vue/language-server svelte-language-server
 
   success "Vue & TypeScript language servers installed"
 }
 
+install_vue_typescript
+
 # ─────────────────────────────────────────────
 # 10. Apply NeoVim config
+# ─────────────────────────────────────────────
+
+install_python() {
+  info "Python: Installing python through apt"
+  sudo apt-get update
+  sudo apt-get install -y python3 python3-pip python3-venv
+  info "Python: Installing python lsp through pip"
+  pip install --break-system-packages python-lsp-server
+  success "Python: Python and python lsp installed"
+}
+
+# ─────────────────────────────────────────────
+# 11. Apply NeoVim config
 # ─────────────────────────────────────────────
 
 apply_config() {
@@ -303,7 +318,7 @@ apply_config() {
 apply_config
 
 # ─────────────────────────────────────────────
-# 11. Summary: PATH entries to add
+# 12. Summary: PATH entries to add
 # ─────────────────────────────────────────────
 
 printf '\n'

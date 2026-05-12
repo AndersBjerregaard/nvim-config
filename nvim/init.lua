@@ -35,6 +35,7 @@ local fileTreeConfig = {
     filters = {
         enable = true,
         git_ignored = true,
+        dotfiles = true,
     },
 }
 require("nvim-tree").setup(fileTreeConfig)
