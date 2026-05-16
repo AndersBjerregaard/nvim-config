@@ -323,6 +323,25 @@ install_terraform() {
         rm -f "$tmpfile"
 
         success "Terraform language server installed to /usr/local/bin"
+    else
+        success "Terraform already installed"
+    fi
+
+    if ! command -v tflint &>/dev/null; then
+        require_cmd unzip
+        info "Terraform: Downloading tflint_linux_amd64.zip"
+        local version="0.62.0"
+        local zipfile="tflint_linux_amd64.zip"
+        local url="https://github.com/terraform-linters/tflint/releases/download/v${version}/${zipfile}"
+        local tmpfile
+        tmpfile="$(mktemp --suffix=".zip")"
+        curl -L --progress-bar -o "$tmpfile" "$url"
+        info "Extracing to /usr/local/bin"
+        sudo unzip "$tmpfile" -d "/usr/local/bin"
+        rm -f "$tmpfile"
+        success "Terraform linter installed to /usr/local/bin"
+    else
+        success "Terraform linter already installed"
     fi
 }
 
