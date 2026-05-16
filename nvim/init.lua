@@ -19,6 +19,7 @@ vim.pack.add{
     { src = 'https://github.com/folke/which-key.nvim', rev = '3aab2147e74890957785941f0c1ad87d0a44c15a' },
     { src = 'https://github.com/kevinhwang91/nvim-ufo', rev = 'ab3eb124062422d276fae49e0dd63b3ad1062cfc' },
     { src = 'https://github.com/kevinhwang91/promise-async', rev = '119e8961014c9bfaf1487bf3c2a393d254f337e2' },
+    { src = 'https://github.com/mfussenegger/nvim-lint' }
 }
 
 -- Disable netrw at the very start for nvim-tree
@@ -156,6 +157,8 @@ vim.keymap.set('n', '<leader>gr', gs.reset_hunk, { desc = "Reset Git hunk" })
 -- Code folding
 vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+-- Create markdown code block
+vim.keymap.set('n', '<leader>C', 'i```<CR><CR>```<Esc>k', { desc = "Markdown code block", noremap = true })
 
 -- Treesitter
 require('nvim-treesitter').setup {
@@ -250,6 +253,25 @@ capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true,
 }
+
+--------------------------
+-------- Linters ---------
+--------------------------
+
+-- local lint = require('lint')
+
+-- Terraform
+-- lint.linters_by_ft = {
+--     terraform = { 'tflint' },
+--     ["terraform-vars"] = { 'tflint' },
+-- }
+
+-- Autocommand to trigger linting
+-- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+--   callback = function()
+--     lint.try_lint()
+--   end,
+-- })
 
 --------------------------
 ---- Language Servers ----
@@ -388,6 +410,12 @@ vim.lsp.config('pylsp', {
     capabilities = capabilities
 })
 vim.lsp.enable('pylsp')
+
+-- Terraform
+vim.lsp.config('terraformls', {
+    capabilities = capabilities,
+})
+vim.lsp.enable('terraformls')
 
 -- Statusline
 require('lualine').setup {
