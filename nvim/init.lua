@@ -521,7 +521,7 @@ local function open_nvim_tree()
 end
 
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'svelte' },
+    pattern = { 'svelte', 'python' },
     callback = function() vim.treesitter.start() end,
 })
 
