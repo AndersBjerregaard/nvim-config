@@ -19,7 +19,8 @@ vim.pack.add{
     { src = 'https://github.com/folke/which-key.nvim', rev = '3aab2147e74890957785941f0c1ad87d0a44c15a' },
     { src = 'https://github.com/kevinhwang91/nvim-ufo', rev = 'ab3eb124062422d276fae49e0dd63b3ad1062cfc' },
     { src = 'https://github.com/kevinhwang91/promise-async', rev = '119e8961014c9bfaf1487bf3c2a393d254f337e2' },
-    { src = 'https://github.com/mfussenegger/nvim-lint' }
+    { src = 'https://github.com/mfussenegger/nvim-lint', rev = 'eab58b48eb11d7745c11c505e0f3057165902461' },
+    { src = 'https://github.com/j-hui/fidget.nvim', rev = '889e2e96edef4e144965571d46f7a77bcc4d0ddf' },
 }
 
 -- Disable netrw at the very start for nvim-tree
@@ -160,6 +161,38 @@ vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
 -- Create markdown code block
 vim.keymap.set('n', '<leader>C', 'i```<CR><CR>```<Esc>k', { desc = "Markdown code block", noremap = true })
 
+--------------------------
+----- Notifications ------
+--------------------------
+
+require('fidget').setup({
+    progress = {
+        suppress_on_insert = true,
+        ignore_done_already = false,
+        ignore_empty_message = false,
+        display = {
+            render_limit = 16,
+            done_ttl = 3,
+            progress_ttl = math.huge,
+            progress_icon = {
+                pattern = "dots",
+            },
+            done_icon = "✔",
+        },
+        lsp = {
+            progress_ringbuf_size = 1,
+        },
+    },
+    notification = {
+        window = {
+            normal_hl = "Comment",
+            winblend = 0,
+            border = "rounded",
+        },
+    },
+})
+vim.notify = require('fidget.notification').notify
+
 -- Treesitter
 require('nvim-treesitter').setup {
 	ensure_installed = { "svelte", "javascript", "typescript", "css", "html", "lua", "vim", "vimdoc" },
@@ -282,13 +315,26 @@ vim.api.nvim_create_autocmd('LspAttach', {
 	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
 	callback = function(ev)
 		local builtin = require('telescope.builtin')
+        local fidget = require('fidget')
 		local opts = { buffer = ev.buf, remap = false }
 
 		-- Definitions & Navigation
-		vim.keymap.set('n', 'gd', builtin.lsp_definitions, opts)
-		vim.keymap.set('n', 'gr', builtin.lsp_references, opts)
-		vim.keymap.set('n', 'gi', builtin.lsp_implementations, opts)
-		vim.keymap.set('n', 'gt', builtin.lsp_type_definitions, opts)
+		vim.keymap.set('n', 'gd', function ()
+		  fidget.notify('Finding definitions...', vim.log.levels.INFO, { annote = 'LSP' })
+          builtin.lsp_definitions()
+		end, opts)
+		vim.keymap.set('n', 'gr', function ()
+		  fidget.notify('Finding references...', vim.log.levels.INFO, { annote = 'LSP' })
+          builtin.lsp_references()
+		end, opts)
+		vim.keymap.set('n', 'gi', function ()
+		  fidget.notify('Finding implementations...', vim.log.levels.INFO, { annote = 'LSP' })
+          builtin.lsp_implementations()
+		end, opts)
+		vim.keymap.set('n', 'gt', function ()
+		  fidget.notify('Finding type definitions...', vim.log.levels.INFO, { annote = 'LSP' })
+          builtin.lsp_type_definitions()
+		end, opts)
 		vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
 
 		-- Actions
