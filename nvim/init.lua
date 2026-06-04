@@ -19,8 +19,10 @@ vim.pack.add{
     { src = 'https://github.com/folke/which-key.nvim', rev = '3aab2147e74890957785941f0c1ad87d0a44c15a' },
     { src = 'https://github.com/kevinhwang91/nvim-ufo', rev = 'ab3eb124062422d276fae49e0dd63b3ad1062cfc' },
     { src = 'https://github.com/kevinhwang91/promise-async', rev = '119e8961014c9bfaf1487bf3c2a393d254f337e2' },
-    { src = 'https://github.com/mfussenegger/nvim-lint', rev = 'eab58b48eb11d7745c11c505e0f3057165902461' },
+    { src = 'https://github.com/mfussenegger/nvim-lint', rev = '665525810630701b84181e4d9eefd24b49845b29' },
     { src = 'https://github.com/j-hui/fidget.nvim', rev = '889e2e96edef4e144965571d46f7a77bcc4d0ddf' },
+    { src = 'https://github.com/CopilotC-Nvim/CopilotChat.nvim', rev = '2db7b404110f92e6d9197fee9cb9a708ae205a10' },
+	{ src = 'https://github.com/nvim-telescope/telescope-ui-select.nvim', rev = '6e51d7da30bd139a6950adf2a47fda6df9fa06d2' }
 }
 
 -- Disable netrw at the very start for nvim-tree
@@ -159,39 +161,24 @@ vim.keymap.set('n', '<leader>gr', gs.reset_hunk, { desc = "Reset Git hunk" })
 vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
 -- Create markdown code block
-vim.keymap.set('n', '<leader>C', 'i```<CR><CR>```<Esc>k', { desc = "Markdown code block", noremap = true })
+vim.keymap.set('n', '<leader>l', 'i```<CR><CR>```<Esc>k', { desc = "Markdown code block", noremap = true })
+-- CopilotChatToggle
+vim.keymap.set('n', '<leader>C', ':CopilotChatToggle<CR>', { desc = "Toggle Copilot Chat" })
 
 --------------------------
------ Notifications ------
+---- UI Select Picker ----
 --------------------------
 
-require('fidget').setup({
-    progress = {
-        suppress_on_insert = true,
-        ignore_done_already = false,
-        ignore_empty_message = false,
-        display = {
-            render_limit = 16,
-            done_ttl = 3,
-            progress_ttl = math.huge,
-            progress_icon = {
-                pattern = "dots",
-            },
-            done_icon = "✔",
-        },
-        lsp = {
-            progress_ringbuf_size = 1,
-        },
-    },
-    notification = {
-        window = {
-            normal_hl = "Comment",
-            winblend = 0,
-            border = "rounded",
-        },
-    },
+require('telescope').setup({
+  extensions = {
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {
+      }
+    }
+  }
 })
-vim.notify = require('fidget.notification').notify
+
+require('telescope').load_extension('ui-select')
 
 -- Treesitter
 require('nvim-treesitter').setup {
@@ -288,6 +275,44 @@ capabilities.textDocument.foldingRange = {
 }
 
 --------------------------
+----- Notifications ------
+--------------------------
+
+require("fidget").setup({
+  progress = {
+    suppress_on_insert = false,
+    ignore_done_already = false,
+    ignore_empty_message = false,
+
+    display = {
+      render_limit = 16,
+      done_ttl = 3,
+      progress_ttl = math.huge,
+
+      progress_icon = {
+        pattern = "dots",
+      },
+
+      done_icon = "✔",
+    },
+
+    lsp = {
+        progress_ringbuf_size = 1,
+    },
+  },
+
+  notification = {
+    window = {
+      normal_hl = "Comment",
+      winblend = 0,
+      border = "rounded",
+    },
+  },
+})
+
+vim.notify = require("fidget.notification").notify
+
+--------------------------
 -------- Linters ---------
 --------------------------
 
@@ -320,19 +345,27 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 		-- Definitions & Navigation
 		vim.keymap.set('n', 'gd', function ()
-		  fidget.notify('Finding definitions...', vim.log.levels.INFO, { annote = 'LSP' })
+		  fidget.notify("Finding definitions...", vim.log.levels.INFO, {
+            annote = "LSP",
+          })
           builtin.lsp_definitions()
 		end, opts)
 		vim.keymap.set('n', 'gr', function ()
-		  fidget.notify('Finding references...', vim.log.levels.INFO, { annote = 'LSP' })
+		  fidget.notify("Finding references...", vim.log.levels.INFO, {
+            annote = "LSP",
+          })
           builtin.lsp_references()
 		end, opts)
 		vim.keymap.set('n', 'gi', function ()
-		  fidget.notify('Finding implementations...', vim.log.levels.INFO, { annote = 'LSP' })
+		  fidget.notify("Finding implementations...", vim.log.levels.INFO, {
+            annote = "LSP",
+          })
           builtin.lsp_implementations()
 		end, opts)
 		vim.keymap.set('n', 'gt', function ()
-		  fidget.notify('Finding type definitions...', vim.log.levels.INFO, { annote = 'LSP' })
+		  fidget.notify("Finding type definitions...", vim.log.levels.INFO, {
+            annote = "LSP",
+          })
           builtin.lsp_type_definitions()
 		end, opts)
 		vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
@@ -378,6 +411,25 @@ vim.filetype.add({
 	},
 })
 
+-- Bicep
+-- You can download bicep lsp updates from https://github.com/Azure/bicep/releases
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = "*.bicep",
+  callback = function()
+    vim.bo.filetype = "bicep"
+  end,
+})
+
+local bicep_lsp_bin = vim.fn.expand('~/.local/share/bicep-language-server/Bicep.LangServer.dll')
+vim.lsp.config('bicep', {
+	cmd = { "dotnet", bicep_lsp_bin },
+	fileTypes = { "bicep", "bicep-params" },
+	root_markers = { ".git" },
+	capabilities = capabilities,
+})
+
+vim.lsp.enable('bicep')
+
 -- C#
 require('roslyn').setup({
 	exe = {
@@ -394,7 +446,7 @@ require('roslyn').setup({
 })
 
 -- TypeScript and Vue
-local vue_language_server_path = vim.fn.expand('~/.local/share/node/lib/node_modules/@vue/language-server')
+local vue_language_server_path = vim.fn.expand('~/.local/share/node/node-v24.14.1-linux-x64/lib/node_modules/@vue/language-server')
 local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
 
 local vue_plugin = {
@@ -559,6 +611,24 @@ require("catppuccin").setup({
 -- Code folding
 require('ufo').setup()
 
+-- Copilot
+require('CopilotChat').setup({
+  model = 'claude-sonnet-4.6', -- AI model to use
+  temperature = 0.1,           -- Lower = focused, higher = creative
+  trusted_tools = true,        -- YOLO
+  window = {
+    layout = 'vertical',       -- 'vertical', 'horizontal', 'float'
+    width = 0.4,               -- 40% of screen width
+  },
+  auto_insert_mode = false,    -- Enter insert mode when opening
+  mappings = {
+    reset = {
+      normal = '<C-x>',        -- Replace default <C-l>
+      insert = '<C-x>',        -- Replace default <C-l>
+    }
+  }
+})
+
 -- Init functions
 local function open_nvim_tree()
 	-- require("nvim-tree.api").tree.open()
@@ -567,7 +637,7 @@ local function open_nvim_tree()
 end
 
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'svelte', 'python' },
+    pattern = { 'svelte', 'python', 'cs', 'typescript', 'javascript', 'vue', 'bicep', 'yaml' },
     callback = function() vim.treesitter.start() end,
 })
 
